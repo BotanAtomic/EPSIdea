@@ -4,10 +4,13 @@ import lombok.Data;
 import org.epsi.configuration.Database;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 public class Message {
 
+    public static Map<Integer, Message> messages = new ConcurrentHashMap<>();
 
     private int id;
 
@@ -21,7 +24,6 @@ public class Message {
 
     private Module module;
 
-
     public Message(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.text = result.getString("text");
@@ -30,6 +32,8 @@ public class Message {
         this.module = Module.modules.get(result.getInt("module"));
 
         this.date = new Date(result.getLong("date"));
+
+        messages.put(id, this);
     }
 
 }

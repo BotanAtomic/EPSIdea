@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 public class Document {
 
-    public static Map<Integer,Document> documents = new ConcurrentHashMap<>();
+    public static Map<Integer, Document> documents = new ConcurrentHashMap<>();
 
     private int id;
 

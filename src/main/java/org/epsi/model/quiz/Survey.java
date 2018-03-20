@@ -4,8 +4,10 @@ import lombok.Data;
 import org.epsi.configuration.Database;
 import org.epsi.model.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Data
 public class Survey {
@@ -20,6 +22,8 @@ public class Survey {
 
     private int requiredPoint;
 
+    private List<Question> questions = new CopyOnWriteArrayList<>();
+
     public Survey(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.name = result.getString("name");
@@ -31,5 +35,7 @@ public class Survey {
     }
 
 
-
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+    }
 }

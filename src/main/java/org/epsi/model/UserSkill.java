@@ -17,6 +17,10 @@ public class UserSkill {
         this.point = result.getInt("point");
 
         this.skill = Skill.skills.get(result.getInt("skill"));
+
+        User.users.get(result.getInt("user")).addUserSkill(this);
     }
+
+
 
 }

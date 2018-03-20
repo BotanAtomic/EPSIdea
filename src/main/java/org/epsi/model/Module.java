@@ -21,6 +21,8 @@ public class Module {
         this.name = result.getString("name");
 
         this.room = Room.rooms.get(result.getInt("room")).addModule(this);
+
+        modules.put(id, this);
     }
 
 }

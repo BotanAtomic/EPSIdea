@@ -22,6 +22,8 @@ public class Skill {
         this.name = result.getString("name");
 
         this.survey = Survey.surveys.get(result.getInt("survey"));
+
+        skills.put(id, this);
     }
 
 }

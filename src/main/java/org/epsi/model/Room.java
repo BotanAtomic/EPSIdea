@@ -22,6 +22,8 @@ public class Room {
     public Room(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.name = result.getString("name");
+
+        rooms.put(id, this);
     }
 
     public Room addModule(Module module) {
