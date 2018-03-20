@@ -1,0 +1,45 @@
+buildscript {
+    ext {
+        springBootVersion = '+'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    /**compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.springframework', name: 'spring-context-support', version: '+'
+    runtime('mysql:mysql-connector-java')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '+'
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '+'
+    compile group: 'javax.mail', name: 'javax.mail-api', version: '+'
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '+' **/
+
+
+    compile 'org.springframework:spring-context:4.3.14.RELEASE'
+    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+
+    compile("org.springframework.boot:spring-boot-starter-web:1.0.0.RELEASE")
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.7.RELEASE'
+
+}
