@@ -63,6 +63,15 @@ public class Database {
             }
         }
 
+        public long getLong(String column) {
+            try {
+                return resultSet.getLong(column);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        }
+
         public String getString(String column) {
             try {
                 return resultSet.getString(column);
