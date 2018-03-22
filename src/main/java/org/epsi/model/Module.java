@@ -16,6 +16,9 @@ public class Module {
 
     private Room room;
 
+    public int documents, surveys;
+
+
     public Module(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.name = result.getString("name");
@@ -23,6 +26,15 @@ public class Module {
         this.room = Room.rooms.get(result.getInt("room")).addModule(this);
 
         modules.put(id, this);
+    }
+
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 
 }

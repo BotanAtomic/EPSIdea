@@ -2,7 +2,7 @@ package org.epsi.model;
 
 import lombok.Data;
 import org.epsi.configuration.Database;
-import org.epsi.model.quiz.Survey;
+import org.epsi.model.quizz.Survey;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

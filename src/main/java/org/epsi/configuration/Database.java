@@ -2,8 +2,8 @@ package org.epsi.configuration;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.epsi.model.*;
-import org.epsi.model.quiz.Question;
-import org.epsi.model.quiz.Survey;
+import org.epsi.model.quizz.Survey;
+import org.epsi.model.quizz.UserSurvey;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -11,20 +11,34 @@ import org.springframework.stereotype.Service;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 @Service
 @EnableAutoConfiguration
 public class Database {
 
-    private Connection connection = null;
+    public static Database database;
+
+    public Connection connection = null;
 
     @Bean
     public Connection dataSource() {
+        database = this;
+
+        Properties properties = new Properties();
+
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream("app.properties"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUser("root");
-        dataSource.setPassword("root");
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("EPSIdea");
+        dataSource.setUser(properties.getProperty("database.user"));
+        dataSource.setPassword(properties.getProperty("database.password"));
+        dataSource.setServerName(properties.getProperty("database.host"));
+        dataSource.setDatabaseName(properties.getProperty("database.name"));
 
         try {
             connection = dataSource.getConnection();
@@ -49,7 +63,6 @@ public class Database {
         loadUsers();
 
         loadSurveys();
-        loadQuestions();
 
         loadDocuments();
         loadMessages();
@@ -57,8 +70,6 @@ public class Database {
         loadSkills();
 
         loadUserSurvey();
-        loadUserModule();
-        loadUserSkill();
     }
 
     private void loadRooms() {
@@ -101,17 +112,6 @@ public class Database {
         System.err.println(Survey.surveys.size() + " surveys loaded");
     }
 
-    private void loadQuestions() {
-        SecureResult secureResult = query("SELECT * from questions");
-
-        int i = 0;
-        while (secureResult.next()) {
-            new Question(secureResult);
-            i++;
-        }
-
-        System.err.println(i + " questions loaded");
-    }
 
     private void loadDocuments() {
         SecureResult secureResult = query("SELECT * from documents");
@@ -150,40 +150,15 @@ public class Database {
         while (secureResult.next()) {
             User user = User.users.get(secureResult.getInt("user"));
             Survey survey = Survey.surveys.get(secureResult.getInt("survey"));
-            user.getSurveys().add(survey);
+            user.getUserSurveys().add(new UserSurvey(user, survey, secureResult.getInt("result")));
             i++;
         }
 
-        System.err.println(i + " user survey loaded");
+        System.err.println(i + " user surveys loaded");
     }
 
-    private void loadUserModule() {
-        SecureResult secureResult = query("SELECT * from user_module");
 
-        int i = 0;
-        while (secureResult.next()) {
-            User user = User.users.get(secureResult.getInt("user"));
-            Module module = Module.modules.get(secureResult.getInt("module"));
-            user.getModules().add(module);
-            i++;
-        }
-
-        System.err.println(i + " user modules loaded");
-    }
-
-    private void loadUserSkill() {
-        SecureResult secureResult = query("SELECT * from user_skills");
-
-        int i = 0;
-        while (secureResult.next()) {
-            new UserSkill(secureResult);
-            i++;
-        }
-
-        System.err.println(i + " user skill loaded");
-    }
-
-    private SecureResult query(String sql) {
+    public SecureResult query(String sql) {
         try {
             return new SecureResult(connection.createStatement().executeQuery(sql));
         } catch (SQLException e) {

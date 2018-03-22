@@ -15,13 +15,16 @@ public class Room {
 
     private int id;
 
-    private String name;
+    private String name, image, description;
 
     private List<Module> modules = new CopyOnWriteArrayList<>();
+
 
     public Room(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.name = result.getString("name");
+        this.description = result.getString("description");
+        this.image = result.getString("image");
 
         rooms.put(id, this);
     }
@@ -29,5 +32,9 @@ public class Room {
     public Room addModule(Module module) {
         this.modules.add(module);
         return this;
+    }
+
+    public int hashCode() {
+        return id;
     }
 }

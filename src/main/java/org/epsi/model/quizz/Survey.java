@@ -1,9 +1,11 @@
-package org.epsi.model.quiz;
+package org.epsi.model.quizz;
 
 import lombok.Data;
 import org.epsi.configuration.Database;
+import org.epsi.model.Module;
 import org.epsi.model.User;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,18 +18,28 @@ public class Survey {
 
     private int id;
 
-    private String name;
+    private String name, html;
 
     private User owner;
 
-    private int requiredPoint;
+    private String question;
 
-    private List<Question> questions = new CopyOnWriteArrayList<>();
+    private List<String> answers;
+
+    private int valid;
+
+    private int module;
 
     public Survey(Database.SecureResult result) {
         this.id = result.getInt("id");
         this.name = result.getString("name");
-        this.requiredPoint = result.getInt("required_point");
+        this.question = result.getString("question");
+
+        this.answers = Arrays.asList(result.getString("answers").split(";"));
+
+        this.valid = result.getInt("valid_answer");
+
+        this.module = result.getInt("module");
 
         this.owner = User.users.get(result.getInt("owner"));
 
@@ -35,7 +47,9 @@ public class Survey {
     }
 
 
-    public void addQuestion(Question question) {
-        this.questions.add(question);
+
+    @Override
+    public int hashCode() {
+        return this.id;
     }
 }
