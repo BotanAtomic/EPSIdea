@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100126
 File Encoding         : 65001
 
-Date: 2018-03-23 11:24:36
+Date: 2018-03-24 19:13:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,9 +25,7 @@ CREATE TABLE `documents` (
   `name` varchar(255) COLLATE utf8_bin DEFAULT '',
   `user` smallint(2) NOT NULL,
   `module` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user` (`user`) USING BTREE,
-  CONSTRAINT `document_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
@@ -51,8 +49,7 @@ CREATE TABLE `messages` (
   `date` bigint(20) NOT NULL,
   `module` int(255) DEFAULT NULL,
   `owner` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `document` (`document`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
